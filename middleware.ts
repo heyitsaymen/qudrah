@@ -31,32 +31,14 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
-  // Protected routes: everything under /(app) is handled by the (app) group
-  // URL paths that require auth (not in route groups — actual URL paths)
-  const protectedPaths = [
-    "/workouts",
-    "/calendar",
-    "/explore",
-    "/profile",
-  ];
-
-  const isProtected =
-    pathname === "/" ||
-    protectedPaths.some((p) => pathname === p || pathname.startsWith(p + "/"));
-
   const isAuthPage = pathname === "/login" || pathname === "/register";
 
-  if (isProtected && !user) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/login";
-    return NextResponse.redirect(url);
+  // Redirect logged-in users away from auth pages
+  if (isAuthPage && user) {
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
-  if (isAuthPage && user) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/";
-    return NextResponse.redirect(url);
-  }
+  // App route protection is handled in (app)/layout.tsx via server redirect
 
   return supabaseResponse;
 }
