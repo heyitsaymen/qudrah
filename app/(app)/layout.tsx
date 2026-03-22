@@ -14,6 +14,7 @@ export default async function AppLayout({
   } = await supabase.auth.getUser();
 
   if (!user) redirect("/login");
+  // Note: this layout covers /dashboard, /workouts, /calendar, /explore, /profile
 
   const { data: profile } = await supabase
     .from("profiles")

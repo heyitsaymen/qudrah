@@ -5,11 +5,11 @@ import { usePathname } from "next/navigation";
 import { Home, Dumbbell, Calendar, Compass, User } from "lucide-react";
 
 const navItems = [
-  { href: "/",         icon: Home,     label: "Home"     },
-  { href: "/workouts", icon: Dumbbell, label: "Workouts" },
-  { href: "/calendar", icon: Calendar, label: "Calendrier"},
-  { href: "/explore",  icon: Compass,  label: "Explorer" },
-  { href: "/profile",  icon: User,     label: "Profil"   },
+  { href: "/dashboard", icon: Home,     label: "Home"      },
+  { href: "/workouts",  icon: Dumbbell, label: "Workouts"  },
+  { href: "/calendar",  icon: Calendar, label: "Calendrier"},
+  { href: "/explore",   icon: Compass,  label: "Explorer"  },
+  { href: "/profile",   icon: User,     label: "Profil"    },
 ];
 
 export default function AppBottomNav() {
@@ -25,8 +25,7 @@ export default function AppBottomNav() {
       }}
     >
       {navItems.map(({ href, icon: Icon, label }) => {
-        const active =
-          href === "/" ? pathname === "/" : pathname.startsWith(href);
+        const active = pathname === href || (href !== "/dashboard" && pathname.startsWith(href));
         return (
           <Link
             key={href}
